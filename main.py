@@ -41,6 +41,11 @@ with st.sidebar:
         st.text(user_setting)
 
     openai_api_key = st.text_input("OpenAI API Key", type="password")
+
+    # 리셋버튼
+    if st.button("리셋"):
+        st.session_state.clear()
+        st.experimental_rerun()
     pass
 
 if new_check == True:
