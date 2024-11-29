@@ -34,8 +34,11 @@ with st.sidebar:
     openai_api_key = st.text_input("OpenAI API Key", type="password")
     pass
 
-
-user = userProfile(name, age, height, weight, desease_result)
+if new_check == False:
+    user = "임시"
+    pass
+else:
+    user = userProfile(name, age, height, weight, desease_result)
 ### 필요 함수 구성 #######################################
 
 # OpenAI API로 답변 생성 함수
