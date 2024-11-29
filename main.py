@@ -3,7 +3,7 @@ from langchain_openai import ChatOpenAI
 import pandas as pd
 import os
 
-from .DATA.UserData import save_user_data, authenticate_user
+from DATA.UserData import save_user_data, authenticate_user
 
 ###### 파일 경로 설정 #####
 USER_DB_FILE = "./data/user_data.csv"
