@@ -76,11 +76,13 @@ elif mode == "로그인":
         # 운동 추천 질문
         with st.form("Question"):
             text = st.text_area("질문 입력:", f"{user['NAME'].values[0]} \n\n 운동 추천해주세요")
+            user_prompt = f"이름 : {user["NAME"]},\n{user["측정연령수"]},\n{user["신장(cm)"]},\n{user["체중(kg)"]}"
             submitted = st.form_submit_button("보내기")
             
             # API Key 확인 후 응답 생성
             if not openai_api_key.startswith("sk-"):
                 st.warning("Please enter your OpenAI API key!", icon="⚠")
+
             if submitted and openai_api_key.startswith("sk-"):
                 response = generate_response(text, openai_api_key)
                 st.info(response)
