@@ -1,6 +1,7 @@
 import pandas as pd
 import datetime
 
+
 # 오늘 날짜
 today = datetime.date.today().strftime("%y%m%d")
 
@@ -27,7 +28,7 @@ def making_id(today):
     return ID
 
 # 신규 데이터에 추가
-def temp(df, new_user):
+def newUserDataAdd(df, new_user):
     df = df
     name, age, height, weight, desease_result = new_user
 
@@ -77,6 +78,10 @@ def searchUser(userdata, id=None, name=None):
         query_result = userdata
     
     return query_result
+    pass
+
+
+def input_check():
     pass
 
 # UserData 불러오기
