@@ -1,10 +1,9 @@
 import streamlit as st
-from langchain_openai import ChatOpenAI
 import pandas as pd
 import os
 
 from DATA.UserData import save_user_data, authenticate_user
-
+from LLMs.openai import generate_response
 ###### 파일 경로 설정 #####
 USER_DB_FILE = "./data/user_data.csv"
 
@@ -83,15 +82,7 @@ elif mode == "로그인":
             if not openai_api_key.startswith("sk-"):
                 st.warning("Please enter your OpenAI API key!", icon="⚠")
             if submitted and openai_api_key.startswith("sk-"):
-                def generate_response(input_text):
-                    llm = ChatOpenAI(
-                        temperature=0,
-                        model_name="gpt-3.5-turbo-0125",
-                        api_key=openai_api_key
-                    )
-                    return llm.predict(input_text)
-                
-                response = generate_response(text)
+                response = generate_response(text, openai_api_key)
                 st.info(response)
 
         # 로그아웃 버튼
