@@ -41,7 +41,7 @@ if mode == "회원가입":
     
     # 회원가입 버튼
     if st.button("회원가입"):
-        new_user = {"이름": name, "나이": age, "키": height, "몸무게": weight, "질환": desease_result}
+        new_user = {"NAME": name, "측정연령수": age, "신장(cm)": height, "체중(kg)": weight, "질환": desease_result}
         user_id = save_user_data(new_user)
         st.success(f"회원가입 완료! 부여된 ID는 '{user_id}' 입니다.")
 
@@ -58,8 +58,9 @@ elif mode == "로그인":
         if st.button("로그인"):
             user = authenticate_user(user_id, name)
             if user is not None:
+                user_info = user.loc["ID", "측정연령수", "신장(cm)", "체중(kg)"]
                 st.session_state.logged_in = True
-                st.session_state.current_user = user
+                st.session_state.current_user = user_info
                 st.success(f"로그인 성공! 환영합니다, {name}님. 로그인 버튼을 한 번 더 눌러주세요")
             else:
                 st.error("로그인 실패! ID 또는 이름을 확인해주세요.")
