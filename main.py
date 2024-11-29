@@ -37,15 +37,14 @@ with st.sidebar:
         desease_result = "없음" if len(disease)==0 else disease
 
         new_user = [name, age, height, weight, desease_result]
-        user_setting = st.button("입력", type="primary")
+        user_setting = st.button("입력", type="secondary")
         st.text(user_setting)
 
     openai_api_key = st.text_input("OpenAI API Key", type="password")
 
     # 리셋버튼
     if st.button("리셋"):
-        st.session_state.clear()
-        st.experimental_rerun()
+        pass
     pass
 
 if new_check == True:
