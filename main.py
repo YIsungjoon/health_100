@@ -9,9 +9,12 @@ from DATA.UserData import userProfile
 st.set_page_config(page_title="Health100")
 ### 화면 구성 ### 타이틀 이름
 st.title("Health100")
+
+st.image("./img/backgroundimg.webp")
+
 ### 화면 구성 ### 사이드 바 구성
 with st.sidebar:
-    new_check = st.checkbox("신규", value = False)
+    new_check = st.checkbox("기존 회원", value = False)
 
     if new_check == True:
         st.text("기존 회원")
@@ -57,9 +60,7 @@ def generate_response(input_text):
 ########################################################
 
 # main 페이지 구성
-if new_check==False:
-    st.text("안녕하세요")
-    st.image("./img/backgroundimg.webp")
+
 
 # 채팅 부분
 if new_check==True:
