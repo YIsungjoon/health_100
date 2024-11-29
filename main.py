@@ -31,7 +31,7 @@ with st.sidebar:
         disease = st.pills("질환", ["고혈압", "당뇨", "관절염"], selection_mode="multi")
         desease_result = "없음" if len(disease)==0 else disease
 
-        new_user = name, age, height, weight, desease_result
+        new_user = [name, age, height, weight, desease_result]
 
     openai_api_key = st.text_input("OpenAI API Key", type="password")
     pass
