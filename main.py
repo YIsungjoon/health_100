@@ -17,6 +17,7 @@ with st.sidebar:
         st.text("기존 회원")
         id = st.text_input("ID")
         name = st.text_input("이름")
+        user_setting = st.button("입력", type="primary")
     else:
         st.text("신규 회원 등록")
 
@@ -32,7 +33,7 @@ with st.sidebar:
         desease_result = "없음" if len(disease)==0 else disease
 
         new_user = [name, age, height, weight, desease_result]
-        user_setting = st.button("생성", type="primary")
+        user_setting = st.button("입력", type="primary")
 
     openai_api_key = st.text_input("OpenAI API Key", type="password")
     pass
