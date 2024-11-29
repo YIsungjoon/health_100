@@ -5,7 +5,7 @@ import datetime
 today = datetime.date.today().strftime("%y%m%d")
 
 # 유저 데이터 불러오기
-df = pd.read_csv("./userdata.csv")
+df = pd.read_csv("./DATA/userdata.csv")
 # 유저 숫자 세기
 user_count = len(df)
 
@@ -42,7 +42,7 @@ def temp(df, new_user):
 
     # 기존 데이터프레임에 행 추가
     df = pd.concat([df, pd.DataFrame([new_row])], ignore_index=True)
-    df.to_csv("./userdata.csv", index=False)
+    df.to_csv("./DATA/userdata.csv", index=False)
     return df
 
 # 유저 검색
