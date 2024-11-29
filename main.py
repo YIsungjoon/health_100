@@ -66,12 +66,11 @@ elif mode == "로그인":
     else:
         # 로그인 후 화면
         user = st.session_state.current_user
-        user = user.loc["ID", "측정연령수", "신장(cm)", "체중(kg)"]
         st.success(f"로그인 중: {user['이름'].values[0]}님 (ID: {user['ID'].values[0]})")
         
         # 사용자 정보 표시
         st.write("회원 정보:")
-        st.write(user)
+        st.write(user[0])
         
         
         
