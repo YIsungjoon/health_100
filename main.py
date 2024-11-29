@@ -56,15 +56,19 @@ def generate_response(input_text):
 ########################################################
 
 # main 페이지 구성
-# 채팅 부분
-with st.form("Question"):
-    # 첫페이지가 실행될 때 보여줄 질문
-    text = st.text_area("질문 입력:", f"{user} \n\n 운동 추천해주세요")
-    # 보내기 버튼
-    submitted = st.form_submit_button("보내기")
+if new_check==True:
+    st.text("안녕하세요")
 
-    # API Key 확인 후 답변 생성
-    if not openai_api_key.startswith("sk-"):
-        st.warning("Please enter your OpenAI API key!", icon="⚠")
-    if submitted and openai_api_key.startswith("sk-"):
-        generate_response(text)
+# 채팅 부분
+if new_check==False:
+    with st.form("Question"):
+        # 첫페이지가 실행될 때 보여줄 질문
+        text = st.text_area("질문 입력:", f"{user} \n\n 운동 추천해주세요")
+        # 보내기 버튼
+        submitted = st.form_submit_button("보내기")
+
+        # API Key 확인 후 답변 생성
+        if not openai_api_key.startswith("sk-"):
+            st.warning("Please enter your OpenAI API key!", icon="⚠")
+        if submitted and openai_api_key.startswith("sk-"):
+            generate_response(text)
