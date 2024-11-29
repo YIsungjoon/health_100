@@ -11,7 +11,7 @@ st.set_page_config(page_title="Health100")
 st.title("Health100")
 ### 화면 구성 ### 사이드 바 구성
 with st.sidebar:
-    new_check = st.checkbox("신규")
+    new_check = st.checkbox("신규", value = True)
 
     if new_check == False:
         st.text("기존 회원")
