@@ -69,7 +69,7 @@ elif mode == "로그인":
         
         # 사용자 정보 표시
         st.write("회원 정보:")
-        st.write(user["NAME","ID","측정연령수","신장(cm)","체중(kg)"])
+        st.write(user[["NAME","ID","측정연령수","신장(cm)","체중(kg)"]])
         
         
         
