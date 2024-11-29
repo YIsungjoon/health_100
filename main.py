@@ -11,9 +11,9 @@ st.set_page_config(page_title="Health100")
 st.title("Health100")
 ### 화면 구성 ### 사이드 바 구성
 with st.sidebar:
-    new_check = st.checkbox("신규", value = True)
+    new_check = st.checkbox("신규", value = False)
 
-    if new_check == False:
+    if new_check == True:
         st.text("기존 회원")
         id = st.text_input("ID")
         name = st.text_input("이름")
@@ -39,7 +39,7 @@ with st.sidebar:
     openai_api_key = st.text_input("OpenAI API Key", type="password")
     pass
 
-if new_check == False:
+if new_check == True:
     user = "임시"
     pass
 else:
@@ -62,7 +62,7 @@ if new_check==True:
     st.image("./img/backgroundimg.webp")
 
 # 채팅 부분
-if new_check==False:
+if new_check==True:
     with st.form("Question"):
         # 첫페이지가 실행될 때 보여줄 질문
         text = st.text_area("질문 입력:", f"{user} \n\n 운동 추천해주세요")
