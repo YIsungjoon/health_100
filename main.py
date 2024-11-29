@@ -31,6 +31,8 @@ with st.sidebar:
         disease = st.pills("질환", ["고혈압", "당뇨", "관절염"], selection_mode="multi")
         desease_result = "없음" if len(disease)==0 else disease
 
+        new_user = name, age, height, weight, desease_result
+
     openai_api_key = st.text_input("OpenAI API Key", type="password")
     pass
 
@@ -38,7 +40,7 @@ if new_check == False:
     user = "임시"
     pass
 else:
-    user = userProfile(name, age, height, weight, desease_result)
+    user = userProfile(new_user)
 ### 필요 함수 구성 #######################################
 
 # OpenAI API로 답변 생성 함수
