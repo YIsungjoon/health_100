@@ -11,19 +11,29 @@ st.set_page_config(page_title="Health100")
 st.title("Health100")
 ### 화면 구성 ### 사이드 바 구성
 with st.sidebar:
-    name = st.text_input("이름",value="홍길동")
+    new_check = st.checkbox("신규")
 
-    age = st.number_input("나이", value=20, min_value=0, max_value=200, step=1)
+    if new_check == False:
+        st.text("기존 회원")
+        id = st.text_input("ID")
+        name = st.text_input("이름")
+    else:
+        st.text("신규 회원 등록")
 
-    height = st.number_input("키", value=170, min_value=0, max_value=400, step=1)
-    
-    weight = st.number_input("몸무게", value=70, min_value=0, max_value=500, step=1)
+        name = st.text_input("이름",value="홍길동")
 
-    disease = st.pills("질환", ["고혈압", "당뇨", "관절염"], selection_mode="multi")
-    desease_result = "없음" if len(disease)==0 else disease
+        age = st.number_input("나이", value=20, min_value=0, max_value=200, step=1)
+
+        height = st.number_input("키", value=170, min_value=0, max_value=400, step=1)
+        
+        weight = st.number_input("몸무게", value=70, min_value=0, max_value=500, step=1)
+
+        disease = st.pills("질환", ["고혈압", "당뇨", "관절염"], selection_mode="multi")
+        desease_result = "없음" if len(disease)==0 else disease
 
     openai_api_key = st.text_input("OpenAI API Key", type="password")
     pass
+
 
 user = userProfile(name, age, height, weight, desease_result)
 ### 필요 함수 구성 #######################################
