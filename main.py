@@ -57,7 +57,7 @@ def generate_response(input_text):
 ########################################################
 
 # main 페이지 구성
-if new_check==True:
+if new_check==False:
     st.text("안녕하세요")
     st.image("./img/backgroundimg.webp")
 
