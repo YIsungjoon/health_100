@@ -1,92 +1,41 @@
 import pandas as pd
 import datetime
 
+###### 파일 경로 설정 #####
+USER_DB_FILE = "./DATA/userdata.csv"
 
 # 오늘 날짜
 today = datetime.date.today().strftime("%y%m%d")
 
+
+###### 유틸 함수 #####
 # 유저 데이터 불러오기
-df = pd.read_csv("./DATA/userdata.csv")
-# 유저 숫자 세기
-user_count = len(df)
+def load_user_data():
+    """Load user data from the CSV file."""
+    return pd.read_csv(USER_DB_FILE)
 
-def userProfile(user):
-    """
-    parameter
-    - 입력받은 데이터를 다시 분해하여
-    - name, age, height, weight, desease_result = user
-    
-    return
-    - 프롬프트화 한 user data
-    """
-    name, age, height, weight, desease_result = user
-    user = f"""이름 : {name},\n나이 : {age},\n키 : {height},\n몸무게 : {weight},\n보유질환 : {desease_result}"""
-    return user
+def save_user_data(new_user):
+    """Save a new user to the CSV file."""
+    df = load_user_data()
+    # 유저 숫자 세기
+    user_count = len(df)
 
-def making_id(today):
-    ID = f"{today}-{user_count+1}" # 유저 카운트에서 +1 을 하기
-    return ID
+    new_id = f"{today}-{user_count+1}"  # 유저 ID는 회원 수 기준으로 생성
+    new_user["ID"] = new_id
+    df = pd.concat([df, pd.DataFrame([new_user])], ignore_index=True)
+    df.to_csv(USER_DB_FILE, index=False)
+    return new_id
 
-# 신규 데이터에 추가
-def newUserDataAdd(df, new_user):
-    df = df
-    name, age, height, weight, desease_result = new_user
-
-    # 새로운 행 데이터
-    new_row = {
-        "ID":f"{making_id}",
-        "NAME": name,
-        "측정연령수": age,
-        "신장(cm)": height,
-        "체중(kg)": weight,
-    }
-
-    # 기존 데이터프레임에 행 추가
-    df = pd.concat([df, pd.DataFrame([new_row])], ignore_index=True)
-    df.to_csv("./DATA/userdata.csv", index=False)
-    return df
-
-# 유저 검색
-def searchUser(userdata, id=None, name=None):
-    """
-    ID와 NAME을 기준으로 데이터를 검색
-    
-    Parameters:
-    - userdata (pd.DataFrame): 사용자 데이터프레임
-    - id (str, optional): 검색할 ID
-    - name (str, optional): 검색할 이름
-    
-    Returns:
-    - pd.DataFrame: 검색 결과 데이터프레임
-    """
-    # 검색 조건 초기화
-    conditions = []
-    
-    # ID 조건 추가
-    if id:
-        conditions.append(userdata["ID"] == id)
-    
-    # Name 조건 추가
-    if name:
-        conditions.append(userdata["Name"] == name)
-    
-    # 조건 조합 (AND 조건)
-    if conditions:
-        query_result = userdata.loc[pd.concat(conditions, axis=1).all(axis=1)]
-    else:
-        # 조건이 없으면 전체 데이터 반환
-        query_result = userdata
-    
-    return query_result
+def authenticate_user(user_id, name):
+    """Authenticate a user with ID and name."""
+    df = load_user_data()
+    user = df[(df["ID"] == user_id) & (df["이름"] == name)]
+    return user if not user.empty else None
+def input_check(check):
+    # 입력 신호 받는 함수
+    check = check
     pass
 
-
-def input_check():
-    pass
-
-# UserData 불러오기
-def Load_user(): 
-    pass
 
 # userdata 컬럼 목록
 # ['ID', 'DATE', 'NAME', '측정회차', '센터명', '연령구분', '측정장소구분명', '측정연령수',

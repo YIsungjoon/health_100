@@ -1,82 +1,101 @@
 import streamlit as st
 from langchain_openai import ChatOpenAI
+import pandas as pd
+import os
 
-###### 모듈 #####
-from DATA.UserData import userProfile
-# from VectorStore.H100
-###### ### #####
-### 화면 구성 ### 상단 바 이름
+from DATA.UserData import save_user_data, authenticate_user
+
+###### 파일 경로 설정 #####
+USER_DB_FILE = "./data/user_data.csv"
+
+###### 화면 구성 #####
 st.set_page_config(page_title="Health100")
-### 화면 구성 ### 타이틀 이름
 st.title("Health100")
-
 st.image("./img/backgroundimg.webp")
 
-### 화면 구성 ### 사이드 바 구성
+### 세션 상태 초기화 ###
+if "logged_in" not in st.session_state:
+    st.session_state.logged_in = False
+if "current_user" not in st.session_state:
+    st.session_state.current_user = None
+
+### 사이드바 구성 ###
 with st.sidebar:
-    new_check = st.checkbox("기존 회원", value = False)
+    st.header("회원 관리")
+    mode = st.radio("회원 모드 선택", ["로그인", "회원가입"])
 
-    if new_check == True:
-        st.text("기존 회원")
-        id = st.text_input("ID")
-        name = st.text_input("이름")
-        user_setting = st.button("입력", type="primary")
-
-    else:
-        st.text("신규 회원 등록")
-
-        name = st.text_input("이름",value="홍길동")
-
-        age = st.number_input("나이", value=20, min_value=0, max_value=200, step=1)
-
-        height = st.number_input("키", value=170, min_value=0, max_value=400, step=1)
-        
-        weight = st.number_input("몸무게", value=70, min_value=0, max_value=500, step=1)
-
-        disease = st.pills("질환", ["고혈압", "당뇨", "관절염"], selection_mode="multi")
-        desease_result = "없음" if len(disease)==0 else disease
-
-        new_user = [name, age, height, weight, desease_result]
-        user_setting = st.button("입력", type="primary")
-        st.text(user_setting)
-
+    # OpenAI API Key 입력
     openai_api_key = st.text_input("OpenAI API Key", type="password")
 
-    # 리셋버튼
-    if st.button("리셋"):
-        pass
-    pass
+### 메인 페이지 ###
+if mode == "회원가입":
+    st.subheader("회원가입")
+    
+    # 회원 정보 입력
+    name = st.text_input("이름", value="홍길동")
+    age = st.number_input("나이", value=20, min_value=0, max_value=200, step=1)
+    height = st.number_input("키", value=170, min_value=0, max_value=400, step=1)
+    weight = st.number_input("몸무게", value=70, min_value=0, max_value=500, step=1)
+    disease = st.multiselect("질환", ["고혈압", "당뇨", "관절염"])
+    desease_result = ", ".join(disease) if disease else "없음"
+    
+    # 회원가입 버튼
+    if st.button("회원가입"):
+        new_user = {"이름": name, "나이": age, "키": height, "몸무게": weight, "질환": desease_result}
+        user_id = save_user_data(new_user)
+        st.success(f"회원가입 완료! 부여된 ID는 '{user_id}' 입니다.")
 
-if new_check == True:
-    user = "임시"
-    pass
-else:
-    user = userProfile(new_user)
-### 필요 함수 구성 #######################################
+elif mode == "로그인":
+    st.subheader("로그인")
 
-# OpenAI API로 답변 생성 함수
+    # 로그인 상태 확인
+    if not st.session_state.logged_in:
+        # 로그인 정보 입력
+        user_id = st.text_input("ID")
+        name = st.text_input("이름")
+        
+        # 로그인 버튼
+        if st.button("로그인"):
+            user = authenticate_user(user_id, name)
+            if user is not None:
+                st.session_state.logged_in = True
+                st.session_state.current_user = user
+                st.success(f"로그인 성공! 환영합니다, {name}님. 로그인 버튼을 한 번 더 눌러주세요")
+            else:
+                st.error("로그인 실패! ID 또는 이름을 확인해주세요.")
+    else:
+        # 로그인 후 화면
+        user = st.session_state.current_user
+        st.success(f"로그인 중: {user['이름'].values[0]}님 (ID: {user['ID'].values[0]})")
+        
+        # 사용자 정보 표시
+        st.write("회원 정보:")
+        st.write(user)
+        
+        
+        
+        # 운동 추천 질문
+        with st.form("Question"):
+            text = st.text_area("질문 입력:", f"{user['이름'].values[0]} \n\n 운동 추천해주세요")
+            submitted = st.form_submit_button("보내기")
+            
+            # API Key 확인 후 응답 생성
+            if not openai_api_key.startswith("sk-"):
+                st.warning("Please enter your OpenAI API key!", icon="⚠")
+            if submitted and openai_api_key.startswith("sk-"):
+                def generate_response(input_text):
+                    llm = ChatOpenAI(
+                        temperature=0,
+                        model_name="gpt-3.5-turbo-0125",
+                        api_key=openai_api_key
+                    )
+                    return llm.predict(input_text)
+                
+                response = generate_response(text)
+                st.info(response)
 
-def generate_response(input_text):
-    llm = ChatOpenAI(temperature=0,
-                     model_name="gpt-3.5-turbo-0125",
-                     api_key= openai_api_key)
-    st.info(llm.predict(input_text))
-
-########################################################
-
-# main 페이지 구성
-
-
-# 채팅 부분
-if new_check==True:
-    with st.form("Question"):
-        # 첫페이지가 실행될 때 보여줄 질문
-        text = st.text_area("질문 입력:", f"{user} \n\n 운동 추천해주세요")
-        # 보내기 버튼
-        submitted = st.form_submit_button("보내기")
-
-        # API Key 확인 후 답변 생성
-        if not openai_api_key.startswith("sk-"):
-            st.warning("Please enter your OpenAI API key!", icon="⚠")
-        if submitted and openai_api_key.startswith("sk-"):
-            generate_response(text)
+        # 로그아웃 버튼
+        if st.button("로그아웃"):
+            st.session_state.logged_in = False
+            st.session_state.current_user = None
+            st.warning("로그아웃 되었습니다.")
