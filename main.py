@@ -18,6 +18,7 @@ with st.sidebar:
         id = st.text_input("ID")
         name = st.text_input("이름")
         user_setting = st.button("입력", type="primary")
+
     else:
         st.text("신규 회원 등록")
 
@@ -58,6 +59,7 @@ def generate_response(input_text):
 # main 페이지 구성
 if new_check==True:
     st.text("안녕하세요")
+    st.image("./img/backgroundimg.webp")
 
 # 채팅 부분
 if new_check==False:
