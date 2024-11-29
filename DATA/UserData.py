@@ -29,7 +29,7 @@ def save_user_data(new_user):
 def authenticate_user(user_id, name):
     """Authenticate a user with ID and name."""
     df = load_user_data()
-    user = df[(df["ID"] == user_id) & (df["이름"] == name)]
+    user = df[(df["ID"] == user_id) & (df["NAME"] == name)]
     return user if not user.empty else None
 def input_check(check):
     # 입력 신호 받는 함수

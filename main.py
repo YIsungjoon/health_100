@@ -76,7 +76,7 @@ elif mode == "로그인":
         
         # 운동 추천 질문
         with st.form("Question"):
-            text = st.text_area("질문 입력:", f"{user['이름'].values[0]} \n\n 운동 추천해주세요")
+            text = st.text_area("질문 입력:", f"{user['NAME'].values[0]} \n\n 운동 추천해주세요")
             submitted = st.form_submit_button("보내기")
             
             # API Key 확인 후 응답 생성
