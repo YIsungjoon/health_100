@@ -58,15 +58,15 @@ elif mode == "로그인":
         if st.button("로그인"):
             user = authenticate_user(user_id, name)
             if user is not None:
-                user_info = user.loc["ID", "측정연령수", "신장(cm)", "체중(kg)"]
                 st.session_state.logged_in = True
-                st.session_state.current_user = user_info
+                st.session_state.current_user = user
                 st.success(f"로그인 성공! 환영합니다, {name}님. 로그인 버튼을 한 번 더 눌러주세요")
             else:
                 st.error("로그인 실패! ID 또는 이름을 확인해주세요.")
     else:
         # 로그인 후 화면
         user = st.session_state.current_user
+        user = user.loc["ID", "측정연령수", "신장(cm)", "체중(kg)"]
         st.success(f"로그인 중: {user['이름'].values[0]}님 (ID: {user['ID'].values[0]})")
         
         # 사용자 정보 표시
