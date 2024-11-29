@@ -2,7 +2,7 @@ import streamlit as st
 from langchain_openai import ChatOpenAI
 
 ###### 모듈 #####
-from DATA.UserDataController import userProfile
+from DATA.UserData import userProfile
 # from VectorStore.H100
 ###### ### #####
 ### 화면 구성 ### 상단 바 이름
